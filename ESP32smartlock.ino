@@ -50,15 +50,7 @@ bool should_show;             //是否显示屏幕内容
 String eff = "";
 int timer =0; //计时器变量
 
-// 打开锁函数
-void open_lock() {
-  buzz();
-  myservo.write(OPEN_ANGLE);
-  delay(1000);
-  myservo.write(CLOSE_ANGLE);
-  delay(1000);
-  should_open = false;
-};
+
    
 
 // 设置蜂鸣器发声的时间，默认为100毫秒
@@ -70,7 +62,15 @@ void buzz(int time = 100) {
   // 将蜂鸣器引脚设置为低电平，停止发声
   digitalWrite(buzzPin, LOW);
 };
-
+// 打开锁函数
+void open_lock() {
+  buzz();
+  myservo.write(OPEN_ANGLE);
+  delay(1000);
+  myservo.write(CLOSE_ANGLE);
+  delay(1000);
+  should_open = false;
+};
 // 注册函数
 void Enroll() {
   // 调用buzz函数，让蜂鸣器发声
