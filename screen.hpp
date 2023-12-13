@@ -62,8 +62,8 @@ class Screen{
         void add_text(String text,int high);
         //void set_cursor(int location_id);
 
-        U8G2_SSD1306_128X64_NONAME_F_4W_SW_SPI u8g2;
-        //U8G2_SH1106_128X64_NONAME_F_4W_SW_SPI u8g2;
+        U8G2_SSD1306_128X64_NONAME_F_4W_SW_SPI u8g2;  //0.96寸屏幕
+        //U8G2_SH1106_128X64_NONAME_F_4W_SW_SPI u8g2; //1.3寸屏幕
 
         menu* now_menu;
         bool is_in_menu;

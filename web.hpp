@@ -6,19 +6,22 @@
 #include <ArduinoJson.h>
 #include <ArduinoJson.hpp>
 
-
+/*根据需要修改*/
+#define AP_MODE true                  //热点模式为true，wifi模式为false 
 #define WIFI_SSID "wifi名称"        //WiFi名称
 #define WIFI_PASSWORD ""                 //WiFi密码
+#define DOORPASSWORD  "PASSWORD"              //开门密码,wifi模式密码为：当前日期的hash前四位 比如2023-09-02取md5算法hash前四位为：cb2e
 
-#define DOORPASSWORD  "PASSWORD"              //开门密码
+//开门标志
 extern bool should_open;
-//网页内容
+
+//网页内容，根据需要修改
 const char* htmlContent = R"rawliteral(
 <!DOCTYPE HTML>
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>指纹门锁</title>  /*网页标题*/
+  <title>指纹门锁</title>
   <style>
     
     body {
@@ -107,7 +110,7 @@ const char* htmlContent = R"rawliteral(
   <div class="container">
     <div class="background"></div>
     <div id="message"></div>
-    <h2>请输入开门密钥</h2>   /*中间的大字*/
+    <h2>请输入开门密钥</h2>
     <div class="input-container">
       <input type="password" name="inputData" placeholder="请输入开门密钥">
     </div>
@@ -150,17 +153,19 @@ const char* htmlContent = R"rawliteral(
 //创建一个异步Web服务器
 WebServer server(80);  
 
-//开门密码
+//开门密码，根据需要修改密码生成方式
 String generate_password() {
-  // struct tm timeinfo;
-  // if (getLocalTime(&timeinfo)){
-  // char timeStr[20];
-  // strftime(timeStr, sizeof(timeStr), "%Y-%m-%d", &timeinfo);
-  // String hash = md5_string(timeStr);
-  // hash=hash.substring(0, 4);
-  // //Serial.println("scr:"+hash);
-  // return hash;
-  // }
+  if (!AP_MODE){
+    struct tm timeinfo;
+    if (getLocalTime(&timeinfo)){
+    char timeStr[20];
+    strftime(timeStr, sizeof(timeStr), "%Y-%m-%d", &timeinfo);
+    String hash = md5_string(timeStr);
+    hash=hash.substring(0, 4);
+    //Serial.println("scr:"+hash);
+    return hash;//密码为当前时间的hash前四位 比如2023-09-02取md5算法hash前四位为：cb2e
+    }
+  }
   return DOORPASSWORD;
 }
 
